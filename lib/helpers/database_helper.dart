@@ -36,8 +36,11 @@ class DatabaseHelper {
     var cats = await db.query('cats', orderBy: 'race');
 
     List<Cat> catsList = cats.isNotEmpty ? cats.map((e) => Cat.fromMap(e)).toList() : [];
-
     return catsList;
   }
 
+  Future<int> add(Cat cat) async {
+    Database db = await instance.database;
+    return await db.insert('cats', cat.toMap());
+  }
 }

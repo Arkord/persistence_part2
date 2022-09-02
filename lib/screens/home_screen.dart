@@ -2,18 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:persistence1/helpers/database_helper.dart';
 import 'package:persistence1/models/cat_model.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
+    final textControllerRace = TextEditingController();
+    final textControllerName = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("SQLite Database"),
         elevation: 0,
       ),
-      body: Center(
-        child: (
+      body: Stack(
+        children: [
+          TextFormField(controller: textControllerRace, decoration: const InputDecoration(
+            labelText: "Input the Race"
+   
+          ),),
+          TextFormField(controller: textControllerName, decoration: const InputDecoration(
+            labelText: "Input Name"
+            
+          ),),
+          Center (
+          child: (
           // Container(
           //   child: const Text('Main content'),
           // )
@@ -39,6 +57,19 @@ class HomeScreen extends StatelessWidget {
             },
           )
         ),
+      ),
+      ]),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.save),
+        onPressed: () async {
+          await DatabaseHelper.instance.add(
+            Cat(race: textControllerRace.text, name: textControllerName.text)
+          );
+          setState(() {
+            textControllerRace.clear();
+            textControllerName.clear();
+          });
+        },
       ),
     );
   }

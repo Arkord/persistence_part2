@@ -13,7 +13,7 @@ class SqliteApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'SQLite Examle',
+      title: 'SQLite Example',
       initialRoute: 'home',
       routes: {
         'home':(context) => const HomeScreen()
