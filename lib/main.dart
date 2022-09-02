@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:persistence1/screens/home_screen.dart';
 
-void main() => runApp(const SqliteApp());
+void main()  {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const SqliteApp());
+}
 
 class SqliteApp extends StatelessWidget {
   const SqliteApp({Key? key}) : super(key: key);
