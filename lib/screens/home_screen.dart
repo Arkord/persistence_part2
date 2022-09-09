@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:persistence1/helpers/database_helper.dart';
 import 'package:persistence1/models/cat_model.dart';
 
+import '../widgets/custom_item_widget.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -60,9 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     shrinkWrap: true,
                     children: snapshot.data!.map((cat) {
                       return Center(
-                        child: ListTile(
-                          title: Text('Race: ${cat.race} | Name: ${cat.name} '),
-                        ),
+                        child: CustomItem(cat: cat)
                       );
                     }).toList(),
                   );
