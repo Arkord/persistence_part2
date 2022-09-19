@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persistence1/helpers/database_helper.dart';
 import 'package:persistence1/models/cat_model.dart';
+import 'package:persistence1/widgets/cats_list_widget.dart';
 
 import '../widgets/custom_item_widget.dart';
 
@@ -14,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    int? catId;
     final textControllerRace = TextEditingController();
     final textControllerName = TextEditingController();
 
@@ -40,9 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),),
             Center (
             child: (
-            // Container(
-            //   child: const Text('Main content'),
-            // )  
             FutureBuilder<List<Cat>>(
               future: DatabaseHelper.instance.getCats(),
               builder: (BuildContext context, AsyncSnapshot<List<Cat>> snapshot) {

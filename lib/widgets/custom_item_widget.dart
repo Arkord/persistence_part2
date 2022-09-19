@@ -15,6 +15,11 @@ class _CustomItemState extends State<CustomItem> {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text('Race: ${widget.cat.race} | Name: ${widget.cat.name} '),
+      onTap: () {
+        setState(() {
+          
+        });
+      },
       onLongPress: () {
         setState(() {
           DatabaseHelper.instance.delete(widget.cat.id!);
