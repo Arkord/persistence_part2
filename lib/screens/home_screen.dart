@@ -13,12 +13,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    int? catId;
+  int? catId;
     final textControllerRace = TextEditingController();
     final textControllerName = TextEditingController();
-
+    
+  @override
+  Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text("SQLite Database"),
@@ -61,7 +62,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     shrinkWrap: true,
                     children: snapshot.data!.map((cat) {
                       return Center(
-                        child: CustomItem(cat: cat)
+                        child: ListTile(
+                        title: Text('Race: ${cat.race} | Name: ${cat.name} '),
+                        onTap: () {
+                          setState(() {
+                            textControllerName.text = cat.name;
+                            textControllerRace.text = cat.race;
+                            catId = cat.id;
+                          });
+                        },
+                        onLongPress: () {
+                          setState(() {
+                            DatabaseHelper.instance.delete(cat.id!);
+                          });
+                        },
+                      )
                       );
                     }).toList(),
                   );
@@ -75,9 +90,17 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.save),
         onPressed: () async {
-          await DatabaseHelper.instance.add(
-            Cat(race: textControllerRace.text, name: textControllerName.text)
-          );
+          if(catId != null) {
+            await DatabaseHelper.instance.update(
+              Cat(id: catId, race: textControllerRace.text, name: textControllerName.text)
+            );
+          }
+          else {
+            await DatabaseHelper.instance.add(
+              Cat(race: textControllerRace.text, name: textControllerName.text)
+            );
+          }
+          
           setState(() {
             textControllerRace.clear();
             textControllerName.clear();
