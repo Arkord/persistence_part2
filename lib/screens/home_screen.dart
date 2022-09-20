@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int? catId;
     final textControllerRace = TextEditingController();
     final textControllerName = TextEditingController();
-    
+
   @override
   Widget build(BuildContext context) {
     
@@ -62,21 +62,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     shrinkWrap: true,
                     children: snapshot.data!.map((cat) {
                       return Center(
-                        child: ListTile(
-                        title: Text('Race: ${cat.race} | Name: ${cat.name} '),
-                        onTap: () {
-                          setState(() {
-                            textControllerName.text = cat.name;
-                            textControllerRace.text = cat.race;
-                            catId = cat.id;
-                          });
-                        },
-                        onLongPress: () {
-                          setState(() {
-                            DatabaseHelper.instance.delete(cat.id!);
-                          });
-                        },
-                      )
+                        child: Card(
+                          color: catId == cat.id ? const Color(0xB37600BA) : Colors.white,
+                          child: ListTile(
+                          textColor: catId == cat.id ? Colors.white : Colors.black,
+                          title: Text('Race: ${cat.race} | Name: ${cat.name} '),
+                          onTap: () {
+                            setState(() {
+                              if(catId == null) {
+                                textControllerName.text = cat.name;
+                                textControllerRace.text = cat.race;
+                                catId = cat.id;
+                              }
+                              else {
+                                textControllerName.clear();
+                                textControllerRace.clear();
+                              }
+                            });
+                          },
+                          onLongPress: () {
+                            setState(() {
+                              DatabaseHelper.instance.delete(cat.id!);
+                            });
+                          },
+                                              ),
+                        )
                       );
                     }).toList(),
                   );
