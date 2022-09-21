@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistence1/helpers/database_helper.dart';
 import 'package:persistence1/models/cat_model.dart';
-import 'package:persistence1/widgets/cats_list_widget.dart';
-
-import '../widgets/custom_item_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -77,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               else {
                                 textControllerName.clear();
                                 textControllerRace.clear();
+                                catId = null;
                               }
                             });
                           },
