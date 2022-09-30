@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../helpers/database_helper.dart';
 
@@ -79,6 +81,10 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             // Attempt to take a picture and get the file `image`
             // where it was saved.
             final image = await _controller.takePicture();
+            Directory documentsDirectory = await getApplicationDocumentsDirectory();
+            String path = join(documentsDirectory.path, image.name);
+
+            image.saveTo(path);
 
             if (!mounted) return;
 

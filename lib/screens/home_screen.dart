@@ -76,45 +76,45 @@ class _HomeScreenState extends State<HomeScreen> {
                 else {
                   return snapshot.data!.isEmpty
                   ? Center(child: Container(padding: const EdgeInsets.only(top: 10.0), child: const Text('No cats in the list')))
-                  : ListView(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    children: snapshot.data!.map((cat) {
-                      return Center(
-                        child: Card(
-                          color: catId == cat.id ? const Color(0xB37600BA) : Colors.white,
-                          child: Stack(
-                            children: [ListTile(
-                            textColor: catId == cat.id ? Colors.white : Colors.black,
-                            title: Text('Race: ${cat.race} | Name: ${cat.name} '),
-                            
-                            onTap: () {
-                              setState(() {
-                                if(catId == null) {
-                                  textControllerName.text = cat.name;
-                                  textControllerRace.text = cat.race;
-                                  catId = cat.id;
-                                }
-                                else {
-                                  textControllerName.clear();
-                                  textControllerRace.clear();
-                                  catId = null;
-                                }
-                              });
-                            },
-                            onLongPress: () {
-                              setState(() {
-                                DatabaseHelper.instance.delete(cat.id!);
-                              });
-                            },
-                            ),
-                            CatsImage(path: cat.image!)
-                            ]
-                                                
-                          ),
-                        )
-                      );
-                    }).toList(),
+                  : SizedBox(
+                    height: 300,
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      children: snapshot.data!.map((cat) {
+                        return Center(
+                          child: Card(
+                            color: catId == cat.id ? const Color(0xB37600BA) : Colors.white,
+                              child: ListTile(
+                              textColor: catId == cat.id ? Colors.white : Colors.black,
+                              title: Text('Race: ${cat.race} | Name: ${cat.name} '),
+                              subtitle: CatsImage(path: cat.image!),
+                              onTap: () {
+                                setState(() {
+                                  if(catId == null) {
+                                    textControllerName.text = cat.name;
+                                    textControllerRace.text = cat.race;
+                                    catId = cat.id;
+                                  }
+                                  else {
+                                    textControllerName.clear();
+                                    textControllerRace.clear();
+                                    catId = null;
+                                  }
+                                });
+                              },
+                              onLongPress: () {
+                                setState(() {
+                                  DatabaseHelper.instance.delete(cat.id!);
+                                });
+                              },
+                              ),
+                              // CatsImage(path: cat.image!)
+                              
+                          )
+                        );
+                      }).toList(),
+                    ),
                   );
                 }
               },
