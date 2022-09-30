@@ -1,9 +1,13 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:persistence1/helpers/database_helper.dart';
 import 'package:persistence1/models/cat_model.dart';
+import 'package:persistence1/screens/taken_picture_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final CameraDescription camera;
+
+  const HomeScreen({Key? key, required this.camera}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -38,6 +42,22 @@ class _HomeScreenState extends State<HomeScreen> {
               labelText: "Input Name"
               
             ),),
+            ElevatedButton(
+              onPressed: () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TakePictureScreen(
+                      camera: widget.camera,
+                      id: catId,
+                    ),
+                  ),
+                );
+              },
+              style:  ElevatedButton.styleFrom(
+                primary: const Color(0xFFFFC107)
+              ),
+              child: const Text('Take Picture')
+            ),
             Center (
             child: (
             FutureBuilder<List<Cat>>(
@@ -61,29 +81,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Center(
                         child: Card(
                           color: catId == cat.id ? const Color(0xB37600BA) : Colors.white,
-                          child: ListTile(
-                          textColor: catId == cat.id ? Colors.white : Colors.black,
-                          title: Text('Race: ${cat.race} | Name: ${cat.name} '),
-                          onTap: () {
-                            setState(() {
-                              if(catId == null) {
-                                textControllerName.text = cat.name;
-                                textControllerRace.text = cat.race;
-                                catId = cat.id;
-                              }
-                              else {
-                                textControllerName.clear();
-                                textControllerRace.clear();
-                                catId = null;
-                              }
-                            });
-                          },
-                          onLongPress: () {
-                            setState(() {
-                              DatabaseHelper.instance.delete(cat.id!);
-                            });
-                          },
-                                              ),
+                          child: Stack(
+                            children: [ListTile(
+                            textColor: catId == cat.id ? Colors.white : Colors.black,
+                            title: Text('Race: ${cat.race} | Name: ${cat.name} '),
+                            
+                            onTap: () {
+                              setState(() {
+                                if(catId == null) {
+                                  textControllerName.text = cat.name;
+                                  textControllerRace.text = cat.race;
+                                  catId = cat.id;
+                                }
+                                else {
+                                  textControllerName.clear();
+                                  textControllerRace.clear();
+                                  catId = null;
+                                }
+                              });
+                            },
+                            onLongPress: () {
+                              setState(() {
+                                DatabaseHelper.instance.delete(cat.id!);
+                              });
+                            },
+                            ),
+                            Text(cat.image!)
+                            ]
+                                                
+                          ),
                         )
                       );
                     }).toList(),

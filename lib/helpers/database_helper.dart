@@ -16,8 +16,9 @@ class DatabaseHelper {
     String path = join(documentsDirectory.path, 'animals.db');
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade
     );
   }
 
@@ -26,9 +27,14 @@ class DatabaseHelper {
       '''CREATE TABLE cats (
         id INTEGER PRIMARY KEY,
         race TEXT,
-        name TEXT
+        name TEXT,
+        image TEXT
       )
     ''');
+  }
+
+  Future<void> _onUpgrade(Database db, int version, int id) async {
+    await db.execute("ALTER TABLE cats ADD COLUMN image TEXT;");
   }
 
   Future<List<Cat>> getCats() async {
@@ -53,4 +59,10 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.update('cats', cat.toMap(), where: 'id = ?', whereArgs: [cat.id]);
   }
+
+  Future<int> updatePic(int id, String path) async {
+    Database db = await instance.database;
+    return await db.update('cats', { "image": path }, where: 'id = ?', whereArgs: [id]);
+  }
+  
 }

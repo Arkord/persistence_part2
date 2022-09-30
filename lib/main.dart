@@ -26,9 +26,10 @@ class SqliteApp extends StatelessWidget {
       title: 'SQLite Example',
       initialRoute: 'home',
       routes: {
-        'home':(context) => TakePictureScreen(
-          camera: firstCamera,
-        )
+        'home': (context) => HomeScreen(camera: firstCamera,)
+        // 'home':(context) => TakePictureScreen(
+        //   camera: firstCamera,
+        // )
       },
       theme: ThemeData.light().copyWith(
         appBarTheme: const AppBarTheme(

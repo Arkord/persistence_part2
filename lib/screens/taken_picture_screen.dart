@@ -3,14 +3,19 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
+import '../helpers/database_helper.dart';
+
 // A screen that allows users to take a picture using a given camera.
 class TakePictureScreen extends StatefulWidget {
+  final CameraDescription camera;
+  final int? id;
+
   const TakePictureScreen({
     super.key,
     required this.camera,
+    this.id
   });
 
-  final CameraDescription camera;
 
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
@@ -77,16 +82,25 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
             if (!mounted) return;
 
-            // If the picture was taken, display it on a new screen.
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(
-                  // Pass the automatically generated path to
-                  // the DisplayPictureScreen widget.
-                  imagePath: image.path,
-                ),
-              ),
-            );
+            if(widget.id != null) {
+              int id = widget.id!;
+              await DatabaseHelper.instance.updatePic(id, image.path);
+            }
+          
+            Navigator.of(context).pop();
+            //await Navigator.of(context).pop();
+
+            //If the picture was taken, display it on a new screen.
+            // await Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => DisplayPictureScreen(
+            //       // Pass the automatically generated path to
+            //       // the DisplayPictureScreen widget.
+            //       imagePath: image.path,
+            //     ),
+            //   ),
+            // );
+
           } catch (e) {
             // If an error occurs, log the error to the console.
             print(e);
@@ -96,6 +110,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       ),
     );
   }
+
 }
 
 // A widget that displays the picture taken by the user.
