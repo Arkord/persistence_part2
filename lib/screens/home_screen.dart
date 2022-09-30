@@ -4,6 +4,8 @@ import 'package:persistence1/helpers/database_helper.dart';
 import 'package:persistence1/models/cat_model.dart';
 import 'package:persistence1/screens/taken_picture_screen.dart';
 
+import '../widgets/cats_image_widget.dart';
+
 class HomeScreen extends StatefulWidget {
   final CameraDescription camera;
 
@@ -106,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               });
                             },
                             ),
-                            Text(cat.image!)
+                            CatsImage(path: cat.image!)
                             ]
                                                 
                           ),
